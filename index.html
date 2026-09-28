@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aprende y Practica: El Verbo GUSTAR</title>
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --accent-yellow: #fbbf24;
+      --accent-pink: #f43f5e;
+      --accent-blue: #38bdf8;
+      --accent-green: #34d399;
+      --accent-purple: #a855f7;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding: 20px; display: flex; justify-content: center; }
+
+    .container { max-width: 950px; width: 100%; display: flex; flex-direction: column; gap: 20px; }
+
+    /* HEADER */
+    header { 
+      background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899); 
+      padding: 25px 20px; 
+      border-radius: 20px; 
+      text-align: center; 
+      box-shadow: 0 10px 25px rgba(168, 85, 247, 0.3);
+    }
+    header h1 { font-size: 2.2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+    header p { font-size: 1rem; opacity: 0.9; margin-top: 5px; }
+
+    /* NAVEGACIÓN POR PESTAÑAS */
+    .tab-nav {
+      display: flex;
+      gap: 10px;
+      background: var(--card-bg);
+      padding: 8px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 12px 15px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.95rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .tab-btn:hover { color: var(--text); background: rgba(255, 255, 255, 0.05); }
+    .tab-btn.active {
+      background: var(--accent-purple);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4);
+    }
+
+    .tab-content { display: none; flex-direction: column; gap: 25px; }
+    .tab-content.active { display: flex; }
+
+    /* CARDS */
+    .card { 
+      background: var(--card-bg); 
+      border: 1px solid var(--border); 
+      padding: 25px; 
+      border-radius: 20px; 
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
+    }
+    .card-title { 
+      font-size: 1.3rem; 
+      font-weight: 700; 
+      color: var(--accent-yellow); 
+      margin-bottom: 20px; 
+      display: flex; 
+      align-items: center; 
+      gap: 10px;
+      border-bottom: 2px dashed var(--border);
+      padding-bottom: 10px;
+    }
+
+    /* PESTAÑA 1: APRENDER */
+    .concept-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center; }
+    @media(max-width: 768px) { .concept-hero { grid-template-columns: 1fr; } }
+    .concept-text { font-size: 1rem; line-height: 1.6; }
+    .concept-text strong { color: var(--accent-pink); }
+
+    .img-card { position: relative; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 16px rgba(0,0,0,0.4); }
+    .img-card img { width: 100%; height: 220px; object-fit: cover; display: block; }
+    .img-badge {
+      position: absolute; bottom: 10px; left: 10px; right: 10px;
+      background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(4px);
+      padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; text-align: center; font-weight: 600; color: var(--accent-blue);
+    }
+
+    .builder-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .control-group { background: #0f172a; padding: 12px; border-radius: 12px; border: 1px solid var(--border); }
+    .control-group label { display: block; font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 6px; }
+    select { width: 100%; padding: 10px; border-radius: 8px; background: #1e293b; color: var(--text); border: 1px solid var(--border); font-weight: 600; outline: none; cursor: pointer; }
+
+    .interactive-display { background: linear-gradient(135deg, #1e1b4b, #311042); border: 2px solid var(--accent-purple); border-radius: 16px; padding: 25px; text-align: center; }
+    .sentence-output { font-size: 1.8rem; font-weight: 800; color: #ffffff; margin-bottom: 10px; }
+    .sentence-output span.highlight-oi { color: var(--accent-yellow); }
+    .sentence-output span.highlight-verbo { color: var(--accent-green); }
+    .sentence-output span.highlight-sujeto { color: var(--accent-pink); }
+    .explanation-output { font-size: 0.95rem; color: var(--accent-blue); background: rgba(56, 189, 248, 0.1); padding: 8px 15px; border-radius: 8px; display: inline-block; }
+
+    /* VERBOS GRID */
+    .verb-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .verb-card { background: #0f172a; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+    .verb-img { height: 130px; width: 100%; object-fit: cover; }
+    .verb-body { padding: 15px; }
+    .verb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .verb-name { font-size: 1.1rem; font-weight: 700; color: var(--accent-green); }
+    .verb-tag { font-size: 0.7rem; padding: 3px 8px; background: rgba(52, 211, 153, 0.1); color: var(--accent-green); border-radius: 12px; font-weight: 700; }
+    .verb-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px; }
+    .verb-example { font-size: 0.9rem; font-style: italic; background: #1e293b; padding: 8px 10px; border-radius: 8px; border-left: 3px solid var(--accent-yellow); }
+
+    /* PESTAÑA 2: PRÁCTICA 1 (10 EJERCICIOS) */
+    .match-list { display: flex; flex-direction: column; gap: 12px; }
+    .match-row { 
+      display: grid; 
+      grid-template-columns: 1.2fr 1fr 1fr 0.3fr; 
+      gap: 10px; 
+      align-items: center; 
+      background: #0f172a; 
+      padding: 12px 15px; 
+      border-radius: 12px; 
+      border: 1px solid var(--border); 
+      transition: all 0.3s ease;
+    }
+    @media(max-width: 700px) { .match-row { grid-template-columns: 1fr; } }
+    .match-subject { font-weight: 600; color: var(--accent-blue); font-size: 0.95rem; }
+    .row-feedback-icon { text-align: center; font-size: 1.2rem; }
+    
+    .btn-check-all {
+      background: var(--accent-green); color: #0f172a; font-weight: 800; border: none; padding: 15px; border-radius: 12px; cursor: pointer; font-size: 1rem; margin-top: 15px; transition: transform 0.2s;
+    }
+    .btn-check-all:hover { transform: scale(1.02); }
+
+    .positive-feedback-box {
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: none;
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* PESTAÑA 3: PRÁCTICA VISUAL */
+    .visual-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; }
+    .visual-card {
+      background: #0f172a; border-radius: 16px; border: 1px solid var(--border); padding: 12px; text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center; position: relative;
+    }
+    .visual-card img { width: 100%; height: 100px; object-fit: cover; border-radius: 10px; }
+    .visual-card h4 { font-size: 0.95rem; font-weight: 700; }
+    .visual-card select { font-size: 0.8rem; padding: 6px; }
+
+    .rating-badge { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; width: 100%; }
+    .visual-toast { color: var(--accent-green); font-size: 0.8rem; font-weight: 700; margin-top: 4px; min-height: 20px; }
+
+    /* SECCIÓN HABLAR / TARJETAS CIRCULARES */
+    .speech-bubble-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 15px; }
+    .circle-activity {
+      width: 120px; height: 120px; border-radius: 50%; overflow: hidden; position: relative; border: 3px solid var(--accent-pink); box-shadow: 0 4px 10px rgba(244, 63, 94, 0.3); transition: transform 0.2s; cursor: pointer;
+    }
+    .circle-activity:hover { transform: scale(1.08); }
+    .circle-activity img { width: 100%; height: 100%; object-fit: cover; }
+    .circle-activity .label {
+      position: absolute; bottom: 0; width: 100%; background: rgba(15, 23, 42, 0.85); color: #fff; font-size: 0.75rem; text-align: center; padding: 3px 0; font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <h1><i class="fa-solid fa-heart"></i> El Verbo GUSTAR y sus Hermanos</h1>
+    <p>Aprende, practica y refuerza la estructura en presente simple</p>
+  </header>
+
+  <!-- NAVEGACIÓN POR PESTAÑAS -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('tab-aprender', event)"><i class="fa-solid fa-book-open"></i> 1. Aprender</button>
+    <button class="tab-btn" onclick="switchTab('tab-practica1', event)"><i class="fa-solid fa-pen-to-square"></i> 2. Unir y Formar (10 Ex)</button>
+    <button class="tab-btn" onclick="switchTab('tab-practica2', event)"><i class="fa-solid fa-icons"></i> 3. Práctica Visual (10 Tarjetas)</button>
+  </div>
+
+  <!-- ==================== PESTAÑA 1: APRENDER ==================== -->
+  <div id="tab-aprender" class="tab-content active">
+    
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-lightbulb"></i> Estructura Invertida</div>
+      <div class="concept-hero">
+        <div class="concept-text">
+          <p>Con el verbo <strong>GUSTAR</strong> y sus verbos hermanos, la cosa o la acción es el sujeto que provoca la reacción.</p>
+          <br>
+          <p>🔑 <strong>Regla general:</strong> Se usa la forma singular (<em>gusta, encanta, molesta, falta, queda...</em>) con acciones (infinitivo) o sustantivos singulares, y la forma plural (<em>gustan, encantan, quedan, faltan...</em>) con sustantivos plurales.</p>
+        </div>
+        <div class="img-card">
+          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&q=80" alt="Pizza">
+          <div class="img-badge"><i class="fa-solid fa-utensils"></i> "La pizza (Sujeto) me gusta (a mí)"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Constructor Interactivo -->
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-gears"></i> Laboratorio de Frases en Presente</div>
+      <div class="builder-controls">
+        <div class="control-group">
+          <label>Énfasis</label>
+          <select id="sel-enfasis" onchange="buildSentence()">
+            <option value="A mí">A mí</option>
+            <option value="A ti">A ti</option>
+            <option value="A ella">A ella</option>
+            <option value="A nosotros">A nosotros</option>
+            <option value="A ellos">A ellos</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label>OI</label>
+          <select id="sel-oi" onchange="buildSentence()">
+            <option value="me">me</option>
+            <option value="te">te</option>
+            <option value="le">le</option>
+            <option value="nos">nos</option>
+            <option value="les">les</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label>Verbo</label>
+          <select id="sel-verbo" onchange="buildSentence()">
+            <option value="gustar">Gustar</option>
+            <option value="encantar">Encantar</option>
+            <option value="fascinar">Fascinar</option>
+            <option value="quedar">Quedar</option>
+            <option value="faltar">Faltar</option>
+            <option value="importar">Importar</option>
+            <option value="parecer">Parecer</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label>Sujeto / Acción</label>
+          <select id="sel-objeto" onchange="buildSentence()">
+            <option value="viajar|infinitivo">viajar (Infinitivo)</option>
+            <option value="el café|singular">el café (Singular)</option>
+            <option value="los gatos|plural">los gatos (Plural)</option>
+            <option value="las montañas|plural">las montañas (Plural)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="interactive-display">
+        <div class="sentence-output" id="sentence-result">A mí me gusta viajar.</div>
+        <div class="explanation-output" id="explanation-result">Forma singular con verbo infinitivo.</div>
+      </div>
+    </div>
+
+    <!-- Verbos Hermanos -->
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-users"></i> La Familia Completa de Verbos Tipo Gustar</div>
+      <div class="verb-grid">
+        <div class="verb-card">
+          <img class="verb-img" src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=500&q=80" alt="Viajar">
+          <div class="verb-body">
+            <div class="verb-header"><span class="verb-name">ENCANTAR</span><span class="verb-tag">Fascinación</span></div>
+            <div class="verb-desc">Expresa agrado máximo.</div>
+            <div class="verb-example">"Me <strong>encanta</strong> viajar."</div>
+          </div>
+        </div>
+        <div class="verb-card">
+          <img class="verb-img" src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=500&q=80" alt="Libros">
+          <div class="verb-body">
+            <div class="verb-header"><span class="verb-name">INTERESAR</span><span class="verb-tag">Curiosidad</span></div>
+            <div class="verb-desc">Atención por un tema.</div>
+            <div class="verb-example">"Nos <strong>interesan</strong> los idiomas."</div>
+          </div>
+        </div>
+        <div class="verb-card">
+          <img class="verb-img" src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=500&q=80" alt="Ropa y zapatos">
+          <div class="verb-body">
+            <div class="verb-header"><span class="verb-name">QUEDAR</span><span class="verb-tag">Ajuste / Talla</span></div>
+            <div class="verb-desc">Cómo sienta la ropa o zapatos.</div>
+            <div class="verb-example">"No me <strong>quedan</strong> esos zapatos."</div>
+          </div>
+        </div>
+        <div class="verb-card">
+          <img class="verb-img" src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=500&q=80" alt="Reloj">
+          <div class="verb-body">
+            <div class="verb-header"><span class="verb-name">FALTAR</span><span class="verb-tag">Ausencia / Tiempo</span></div>
+            <div class="verb-desc">Cosas o tiempo que hacen falta.</div>
+            <div class="verb-example">"Te <strong>faltan</strong> dos minutos."</div>
+          </div>
+        </div>
+        <div class="verb-card">
+          <img class="verb-img" src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=500&q=80" alt="Planeta">
+          <div class="verb-body">
+            <div class="verb-header"><span class="verb-name">IMPORTAR</span><span class="verb-tag">Valor / Relevancia</span></div>
+            <div class="verb-desc">Nivel de importancia asignado.</div>
+            <div class="verb-example">"Les <strong>importan</strong> los exámenes."</div>
+          </div>
+        </div>
+        <div class="verb-card">
+          <img class="verb-img" src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=500&q=80" alt="Estudio">
+          <div class="verb-body">
+            <div class="verb-header"><span class="verb-name">PARECER</span><span class="verb-tag">Opinión</span></div>
+            <div class="verb-desc">Juicio o valoración personal.</div>
+            <div class="verb-example">"Nos <strong>parece</strong> fácil la clase."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==================== PESTAÑA 2: PRÁCTICA 1 (10 EJERCICIOS FLEXIBLES) ==================== -->
+  <div id="tab-practica1" class="tab-content">
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-link"></i> Completa y Forma las 10 Oraciones</div>
+      <p style="color: var(--text-muted); margin-bottom: 15px;">Selecciona la forma del verbo y el complemento que desees. La evaluación verificará que haya <strong>concordancia gramatical correcta</strong>:</p>
+      
+      <div class="match-list">
+        
+        <!-- Ejercicio 1 -->
+        <div class="match-row" id="row-1">
+          <div class="match-subject">1. A mí _____ (GUSTAR)</div>
+          <select class="ex-verb">
+            <option value="">-- Verbo --</option>
+            <option value="gusta">gusta</option>
+            <option value="gustan">gustan</option>
+          </select>
+          <select class="ex-comp">
+            <option value="">-- Complemento --</option>
+            <option value="sing">el sushi japonés</option>
+            <option value="plur">los insectos pequeños</option>
+          </select>
+          <div class="row-feedback-icon"></div>
+        </div>
+
+        <!-- Ejercicio 2 -->
+        <div class="match-row" id="row-2">
+          <div class="match-subject">2. A nosotros nos _____ (ENCANTAR)</div>
+          <select class="ex-verb">
+            <option value="">-- Verbo --</option>
+            <option value="encanta">encanta</option>
+            <option value="encantan">encantan</option>
+          </select>
+          <select class="ex-comp">
+            <option value="">-- Complemento --</option>
+            <option value="sing">cocinar postres</option>
+            <option value="plur">las películas de acción</option>
+          </select>
+          <div class="row-feedback-icon"></div>
+        </div>
+
+        <!-- Ejercicio 3 -->
+        <div class="match-row" id="row-3">
+          <div class="match-subject">3. A Carlos le _____ (MOLESTAR)</div>
+          <select class="ex-verb">
+            <option value="">-- Verbo --</option>
+            <option value="molesta">molesta</option>
+            <option value="molestan">molestan</option>
+          </select>
+          <select class="ex-comp">
+            <option value="">-- Complemento --</option>
+            <option value="sing">madrugar muy temprano</option>
+            <option value="plur">los ruidos fuertes</option>
+          </select>
+          <div class="row-feedback-icon"></div>
+        </div>
+
+        <!-- Ejercicio 4 -->
+        <div class="match-row" id="row-4">
+          <div class="match-subject">4. A mis amigos les _____ (INTERESAR)</div>
+          <select class="ex-verb">
+            <option value="">-- Verbo --</option>
+            <option value="interesa">interesa</option>
+            <option value="interesan">interesan</option>
+          </select>
+          <select class="ex-comp">
+            <option value="">-- Complemento --</option>
+            <option value="sing">el arte moderno</option>
+            <option value="plur">los idiomas extranjeros</option>
+          </select>
+          <div class="row-feedback-icon"></div>
+        </div>
+
+        <!-- Ejercicio 5 -->
+        <div class="match-row" id="row-5">
+          <div class="match-subject">5. ¿A ti te _____ (DOLER)</div>
+          <select class="ex-verb">
+            <option value="">-- Verbo --</option>
+            <option value="duele">duele</option>
+            <option value="duelen">duelen</option>
+          </select>
+          <select class="ex-comp">
+            <option value="">-- Complemento --</option>
+            <option value="sing">la espalda</option>
+            <option value="plur">los pies después de caminar</option>
+          </select>
+          <div class="row-feedback-icon"></div>
+        </div>
+
+        <!-- Ejercicio 6 -->
+        <div class="match-row" id="row-6">
+          <div class="match-subject">6. A Sofia le _____ (FASCINAR)</div>
+          <select class="ex-verb">
+            <option value="">-- Verbo --</option>
+            <option value="fascina">fascina</option>
+            <option value="fascinan">fascinan</option>
+          </select>
+          <select class="ex-comp">
+            <option value="">-- Complemento --</option>
+            <option value="sing">leer novelas históricas</option>
+            <option value="plur">los videojuegos antiguos</option>
+          </select>
+          <div class="row-feedback-icon"></div>
+        </div>
+
+        <!-- Ejercicio 7 -->
+        <div class="match-row" id="row-7">
+          <div class="match-subject">7. A vosotros os _____ (IMPORTAR)</div>
+          <select class="ex-verb">
+            <option value="">-- Verbo --</option>
+            <option value="importa">importa</option>
+            <option value="importan">importan</option>
+          </select>
+          <select class="ex-comp">
+            <option value="">-- Complemento --</option>
+            <option value="sing">el medio ambiente</option>
+            <option value="plur">las notas de los exámenes</option>
+          </select>
+          <div class="row-feedback-icon"></div>
+        </div>
+
+        <!-- Ejercicio 8 -->
+        <div class="match-row" id="row-8">
+          <div class="match-subject">8. A mí no me _____ (QUEDAR)</div>
+          <select class="ex-verb">
+            <option value="">-- Verbo --</option>
+            <option value="queda">queda</option>
+            <option value="quedan">quedan</option>
+          </select>
+          <select class="ex-comp">
+            <option value="">-- Complemento --</option>
+            <option value="sing">este abrigo elegante</option>
+            <option value="plur">bien esos zapatos</option>
+          </select>
+          <div class="row-feedback-icon"></div>
+        </div>
+
+        <!-- Ejercicio 9 -->
+        <div class="match-row" id="row-9">
+          <div class="match-subject">9. A los estudiantes les _____ (PARECER)</div>
+          <select class="ex-verb">
+            <option value="">-- Verbo --</option>
+            <option value="parece">parece</option>
+            <option value="parecen">parecen</option>
+          </select>
+          <select class="ex-comp">
+            <option value="">-- Complemento --</option>
+            <option value="sing">interesante la lección</option>
+            <option value="plur">fáciles los ejercicios</option>
+          </select>
+          <div class="row-feedback-icon"></div>
+        </div>
+
+        <!-- Ejercicio 10 -->
+        <div class="match-row" id="row-10">
+          <div class="match-subject">10. A ti te _____ (FALTAR)</div>
+          <select class="ex-verb">
+            <option value="">-- Verbo --</option>
+            <option value="falta">falta</option>
+            <option value="faltan">faltan</option>
+          </select>
+          <select class="ex-comp">
+            <option value="">-- Complemento --</option>
+            <option value="sing">un ingrediente para la receta</option>
+            <option value="plur">dos minutos para terminar</option>
+          </select>
+          <div class="row-feedback-icon"></div>
+        </div>
+
+      </div>
+
+      <button class="btn-check-all" onclick="checkMatchingExercise()"><i class="fa-solid fa-circle-check"></i> Comprobar 10 Respuestas</button>
+      <div id="match-feedback-box" class="positive-feedback-box"></div>
+    </div>
+  </div>
+
+  <!-- ==================== PESTAÑA 3: PRÁCTICA VISUAL ==================== -->
+  <div id="tab-practica2" class="tab-content">
+    
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-images"></i> Actividad 1: 10 Fichas de Opinión y Gustos</div>
+      <p style="color: var(--text-muted); margin-bottom: 15px;">Selecciona tu opinión sobre cada elemento para recibir tu refuerzo positivo:</p>
+      
+      <div class="visual-grid">
+        <!-- 1 -->
+        <div class="visual-card">
+          <img src="https://images.unsplash.com/photo-1584270354949-c26b0d5b4a0c?auto=format&fit=crop&w=400&q=80" ">
+          <h4>1. El brócoli</h4>
+          <select onchange="updateOpinion(this)">
+            <option value="">Tu opinión...</option>
+            <option value="#34d399|Me encanta">💚 Me encanta</option>
+            <option value="#a7f3d0|Me gusta">🌱 Me gusta</option>
+            <option value="#fbbf24|Me da igual">💛 Me da igual</option>
+            <option value="#f43f5e|No me gusta">💗 No me gusta</option>
+          </select>
+          <span class="rating-badge" style="display:none;"></span>
+          <div class="visual-toast"></div>
+        </div>
+
+        <!-- 2 -->
+        <div class="visual-card">
+          <img src="https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=400&q=80" alt="Lluvia">
+          <h4>2. La lluvia</h4>
+          <select onchange="updateOpinion(this)">
+            <option value="">Tu opinión...</option>
+            <option value="#34d399|Me encanta">💚 Me encanta</option>
+            <option value="#a7f3d0|Me gusta">🌱 Me gusta</option>
+            <option value="#fbbf24|Me da igual">💛 Me da igual</option>
+            <option value="#f43f5e|No me gusta">💗 No me gusta</option>
+          </select>
+          <span class="rating-badge" style="display:none;"></span>
+          <div class="visual-toast"></div>
+        </div>
+
+        <!-- 3 -->
+        <div class="visual-card">
+          <img src="https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=400&q=80">
+          <h4>3. El sushi</h4>
+          <select onchange="updateOpinion(this)">
+            <option value="">Tu opinión...</option>
+            <option value="#34d399|Me encanta">💚 Me encanta</option>
+            <option value="#a7f3d0|Me gusta">🌱 Me gusta</option>
+            <option value="#fbbf24|Me da igual">💛 Me da igual</option>
+            <option value="#f43f5e|No me gusta">💗 No me gusta</option>
+          </select>
+          <span class="rating-badge" style="display:none;"></span>
+          <div class="visual-toast"></div>
+        </div>
+
+        <!-- 4 -->
+        <div class="visual-card">
+          <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=400&q=80" alt="Videojuegos">
+          <h4>4. Videojuegos</h4>
+          <select onchange="updateOpinion(this)">
+            <option value="">Tu opinión...</option>
+            <option value="#34d399|Me encanta">💚 Me encanta</option>
+            <option value="#a7f3d0|Me gusta">🌱 Me gusta</option>
+            <option value="#fbbf24|Me da igual">💛 Me da igual</option>
+            <option value="#f43f5e|No me gusta">💗 No me gusta</option>
+          </select>
+          <span class="rating-badge" style="display:none;"></span>
+          <div class="visual-toast"></div>
+        </div>
+
+        <!-- 5 -->
+        <div class="visual-card">
+          <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=400&q=80" alt="Conciertos">
+          <h4>5. Conciertos</h4>
+          <select onchange="updateOpinion(this)">
+            <option value="">Tu opinión...</option>
+            <option value="#34d399|Me encanta">💚 Me encanta</option>
+            <option value="#a7f3d0|Me gusta">🌱 Me gusta</option>
+            <option value="#fbbf24|Me da igual">💛 Me da igual</option>
+            <option value="#f43f5e|No me gusta">💗 No me gusta</option>
+          </select>
+          <span class="rating-badge" style="display:none;"></span>
+          <div class="visual-toast"></div>
+        </div>
+
+        <!-- 6 -->
+        <div class="visual-card">
+          <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=400&q=80" alt="Gatos">
+          <h4>6. Los gatos</h4>
+          <select onchange="updateOpinion(this)">
+            <option value="">Tu opinión...</option>
+            <option value="#34d399|Me encanta">💚 Me encanta</option>
+            <option value="#a7f3d0|Me gusta">🌱 Me gusta</option>
+            <option value="#fbbf24|Me da igual">💛 Me da igual</option>
+            <option value="#f43f5e|No me gusta">💗 No me gusta</option>
+          </select>
+          <span class="rating-badge" style="display:none;"></span>
+          <div class="visual-toast"></div>
+        </div>
+
+        <!-- 7 -->
+        <div class="visual-card">
+          <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=400&q=80" alt="Gimnasio">
+          <h4>7. Ir al gimnasio</h4>
+          <select onchange="updateOpinion(this)">
+            <option value="">Tu opinión...</option>
+            <option value="#34d399|Me encanta">💚 Me encanta</option>
+            <option value="#a7f3d0|Me gusta">🌱 Me gusta</option>
+            <option value="#fbbf24|Me da igual">💛 Me da igual</option>
+            <option value="#f43f5e|No me gusta">💗 No me gusta</option>
+          </select>
+          <span class="rating-badge" style="display:none;"></span>
+          <div class="visual-toast"></div>
+        </div>
+
+        <!-- 8 -->
+        <div class="visual-card">
+          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80" alt="Playa">
+          <h4>8. La playa</h4>
+          <select onchange="updateOpinion(this)">
+            <option value="">Tu opinión...</option>
+            <option value="#34d399|Me encanta">💚 Me encanta</option>
+            <option value="#a7f3d0|Me gusta">🌱 Me gusta</option>
+            <option value="#fbbf24|Me da igual">💛 Me da igual</option>
+            <option value="#f43f5e|No me gusta">💗 No me gusta</option>
+          </select>
+          <span class="rating-badge" style="display:none;"></span>
+          <div class="visual-toast"></div>
+        </div>
+
+        <!-- 9 -->
+        <div class="visual-card">
+          <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=400&q=80" ">
+          <h4>9. El café caliente</h4>
+          <select onchange="updateOpinion(this)">
+            <option value="">Tu opinión...</option>
+            <option value="#34d399|Me encanta">💚 Me encanta</option>
+            <option value="#a7f3d0|Me gusta">🌱 Me gusta</option>
+            <option value="#fbbf24|Me da igual">💛 Me da igual</option>
+            <option value="#f43f5e|No me gusta">💗 No me gusta</option>
+          </select>
+          <span class="rating-badge" style="display:none;"></span>
+          <div class="visual-toast"></div>
+        </div>
+
+        <!-- 10 -->
+        <div class="visual-card">
+          <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=400&q=80" alt="Libros">
+          <h4>10. Leer libros</h4>
+          <select onchange="updateOpinion(this)">
+            <option value="">Tu opinión...</option>
+            <option value="#34d399|Me encanta">💚 Me encanta</option>
+            <option value="#a7f3d0|Me gusta">🌱 Me gusta</option>
+            <option value="#fbbf24|Me da igual">💛 Me da igual</option>
+            <option value="#f43f5e|No me gusta">💗 No me gusta</option>
+          </select>
+          <span class="rating-badge" style="display:none;"></span>
+          <div class="visual-toast"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actividad 2: Rueda de Conversación -->
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-comments"></i> Actividad 2: Práctica de Expresión Oral</div>
+      <p style="color: var(--text-muted);">Haz clic en cualquier actividad para estructurar tu respuesta oral:</p>
+      
+      <div class="speech-bubble-container">
+        <div class="circle-activity" onclick="speakPrompt('nadar en la piscina')">
+          <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=300&q=80" alt="Nadar">
+          <div class="label">Nadar</div>
+        </div>
+
+        <div class="circle-activity" onclick="speakPrompt('pintar cuadros')">
+          <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=300&q=80"r">>
+          <div class="label">Pintar</div>
+        </div>
+
+        <div class="circle-activity" onclick="speakPrompt('cocinar recetas nuevas')">
+          <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=300&q=80" alt="Cocinar">
+          <div class="label">Cocinar</div>
+        </div>
+
+        <div class="circle-activity" onclick="speakPrompt('correr en el parque')">
+          <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=300&q=80" alt="Correr">
+          <div class="label">Correr</div>
+        </div>
+      </div>
+
+      <div id="speech-target" style="margin-top: 20px; background: #0f172a; padding: 15px; border-radius: 12px; border: 1px solid var(--accent-pink); text-align: center; font-size: 1.1rem; color: var(--accent-pink); font-weight: 700;">
+        👈 Haz clic en una imagen circular para practicar la oración.
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- SCRIPT ACTUALIZADO CON EVALUACIÓN DINÁMICA -->
+<script>
+  const refuerzosPositivos = [
+    "🌟 ¡Excelente trabajo! Dominas muy bien el uso de este verbo.",
+    "🎉 ¡Fantástico! Tu comprensión de la concordancia es impecable.",
+    "👏 ¡Bravo! Sigue así, estás progresando a pasos agigantados.",
+    "⭐ ¡Magnífico! Has conectado correctamente el sujeto y el verbo.",
+    "🚀 ¡Impresionante! Tu español se vuelve más preciso en cada ejercicio."
+  ];
+
+  function getRandomRefuerzo() {
+    return refuerzosPositivos[Math.floor(Math.random() * refuerzosPositivos.length)];
+  }
+
+  function switchTab(tabId, evt) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+    evt.currentTarget.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+  }
+
+  const verbosData = {
+    gustar: { sing: 'gusta', plur: 'gustan' },
+    encantar: { sing: 'encanta', plur: 'encantan' },
+    fascinar: { sing: 'fascina', plur: 'fascinan' },
+    quedar: { sing: 'queda', plur: 'quedan' },
+    faltar: { sing: 'falta', plur: 'faltan' },
+    importar: { sing: 'importa', plur: 'importan' },
+    parecer: { sing: 'parece', plur: 'parecen' }
+  };
+
+  function buildSentence() {
+    const enfasis = document.getElementById('sel-enfasis').value;
+    const oi = document.getElementById('sel-oi').value;
+    const verboKey = document.getElementById('sel-verbo').value;
+    const objRaw = document.getElementById('sel-objeto').value.split('|');
+    
+    const objTexto = objRaw[0];
+    const objTipo = objRaw[1];
+
+    const verboFinal = (objTipo === 'plural') ? verbosData[verboKey].plur : verbosData[verboKey].sing;
+
+    const display = document.getElementById('sentence-result');
+    display.innerHTML = `${enfasis} <span class="highlight-oi">${oi}</span> <span class="highlight-verbo">${verboFinal}</span> <span class="highlight-sujeto">${objTexto}</span>.`;
+
+    const exp = document.getElementById('explanation-result');
+    if (objTipo === 'infinitivo') {
+      exp.innerHTML = `<i class="fa-solid fa-circle-info"></i> Usas <strong>${verboFinal}</strong> porque le sigue un verbo en infinitivo.`;
+    } else if (objTipo === 'singular') {
+      exp.innerHTML = `<i class="fa-solid fa-circle-info"></i> Usas <strong>${verboFinal}</strong> porque le sigue un sustantivo singular.`;
+    } else {
+      exp.innerHTML = `<i class="fa-solid fa-circle-info"></i> Usas <strong>${verboFinal}</strong> porque le sigue un sustantivo plural.`;
+    }
+  }
+
+  // VALIDACIÓN DINÁMICA DE CONCORDANCIA GRAMATICAL
+  function checkMatchingExercise() {
+    const total = 10;
+    let correctos = 0;
+
+    for (let i = 1; i <= total; i++) {
+      const row = document.getElementById(`row-${i}`);
+      const selectVerb = row.querySelector('.ex-verb');
+      const selectComp = row.querySelector('.ex-comp');
+      const iconDiv = row.querySelector('.row-feedback-icon');
+
+      const verbVal = selectVerb.value;
+      const compType = selectComp.value; // 'sing' o 'plur'
+
+      if (!verbVal || !compType) {
+        row.style.borderColor = 'var(--accent-pink)';
+        row.style.background = 'rgba(244, 63, 94, 0.08)';
+        iconDiv.innerHTML = '❌';
+        continue;
+      }
+
+      // Regla de concordancia: los verbos en plural terminan en -n (gustan, encantan, etc.)
+      const isVerbPlural = verbVal.endsWith('n');
+
+      // Verifica concordancia: singular con singular, plural con plural
+      const isGrammaticallyCorrect = (isVerbPlural && compType === 'plur') || (!isVerbPlural && compType === 'sing');
+
+      if (isGrammaticallyCorrect) {
+        row.style.borderColor = 'var(--accent-green)';
+        row.style.background = 'rgba(52, 211, 153, 0.08)';
+        iconDiv.innerHTML = '✅';
+        correctos++;
+      } else {
+        row.style.borderColor = 'var(--accent-pink)';
+        row.style.background = 'rgba(244, 63, 94, 0.08)';
+        iconDiv.innerHTML = '❌';
+      }
+    }
+
+    const box = document.getElementById('match-feedback-box');
+    box.style.display = 'block';
+
+    if (correctos === total) {
+      box.style.background = 'rgba(52, 211, 153, 0.2)';
+      box.style.border = '2px solid var(--accent-green)';
+      box.style.color = 'var(--accent-green)';
+      box.innerHTML = `${getRandomRefuerzo()}<br><span style="font-size:0.9rem; font-weight:normal;">¡Todas las oraciones respetan la concordancia gramatical (10/10)!</span>`;
+    } else {
+      box.style.background = 'rgba(251, 191, 36, 0.2)';
+      box.style.border = '2px solid var(--accent-yellow)';
+      box.style.color = 'var(--accent-yellow)';
+      box.innerHTML = `💪 Tienes ${correctos} de ${total} combinaciones gramaticalmente correctas. Recuerda: usa forma plural si el complemento es plural.`;
+    }
+  }
+
+  function updateOpinion(selectEl) {
+    const card = selectEl.closest('.visual-card');
+    const badge = card.querySelector('.rating-badge');
+    const toast = card.querySelector('.visual-toast');
+
+    if (!selectEl.value) {
+      badge.style.display = 'none';
+      toast.innerText = '';
+      return;
+    }
+
+    const [color, text] = selectEl.value.split('|');
+    badge.style.display = 'block';
+    badge.style.backgroundColor = color;
+    badge.style.color = '#0f172a';
+    badge.innerText = text;
+
+    toast.innerText = "¡Bien expresado! ✨";
+  }
+
+  function speakPrompt(activity) {
+    const target = document.getElementById('speech-target');
+    target.innerHTML = `💬 <em>"A mí me gusta <strong>${activity}</strong> en mi tiempo libre. ¿Y a ti?"</em>`;
+  }
+
+  buildSentence();
+</script>
+
+</body>
+</html>
